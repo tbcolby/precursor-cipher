@@ -1,25 +1,10 @@
-# Cipher Workshop — Agent Evolution Report
+# Cipher Workshop — agent notes
 
-## Agents Used
-1. **ideation.md** — Cipher selection, feature design
-2. **architecture.md** — State machine, cipher module pattern
-3. **encoding.md** — Validated for alphabet manipulation patterns
-4. **graphics.md** — Wrapped text display, frequency bar chart
-5. **storage.md** — Saved messages PDDB pattern
-6. **build.md** — Standard Cargo.toml
-7. **review.md** — Standards compliance
+Rebuilt 2026-11-20 on `precursor-appkit` (strategy R from the portfolio
+remediation plan). Read `CLAUDE.md` for layout. Rules that matter here:
 
-## New Patterns
-- **Classic cipher module**: Pure functions for encrypt/decrypt with no Xous dependencies. Could be extracted as a standalone `no_std` library.
-- **Frequency analysis**: Letter count with bar chart rendering. Reusable for any text analysis tool.
-- **Key entry branching**: Same KeyEntry state dispatches to different input modes (numeric vs text) based on selected cipher.
-- **Reverse operation**: Swap input↔output and flip encrypt/decrypt mode in one keystroke.
-
-## Metrics
-| Metric | Value |
-|--------|-------|
-| Source files | 5 |
-| Estimated LOC | ~1,750 |
-| States | 6 |
-| Ciphers | 6 |
-| Toolkit agents used | 7 of 12 |
+- Keys are validated when built (`CipherKey::new`); never run a cipher on an
+  unchecked key. Every cipher has known-vector and round-trip tests.
+- These are teaching ciphers. Don't describe them as protecting anything.
+- No key or message text in logs or `Debug`; message buffers are zeroized.
+- Every screen exits on Backspace or F4; `∴` is never delivered to apps.

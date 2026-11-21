@@ -1,18 +1,22 @@
 # Cipher Workshop — Build Notes
 
+Package `cipher-workshop` (not `cipher`: RustCrypto's `cipher` crate is in the
+xous-core graph). Repo name `precursor-cipher` is unchanged.
+
 ## Architecture
-- 6-state machine: CipherSelect, Input, KeyEntry, Output, Frequency, Saved
-- 6 cipher implementations: Caesar, ROT13, Atbash, Vigenere, Substitution, Rail Fence
-- All ciphers operate on ASCII, non-alpha chars passed through
-- Frequency analysis with bar chart display
+- `core/` (`cipher-workshop-core`, no Xous deps, host-tested): ciphers with
+  validated keys (`CipherKey`), frequency analysis, saved-record format, and
+  the screen state machine (`Ui`, which returns `Effect`s for storage and
+  leaving).
+- `src/main.rs` routes GAM messages (template pattern); `src/app.rs` maps keys
+  to `Ui`, performs effects via `appkit::store::Store`, draws via
+  `appkit::screen::Screen`. No pump: nothing changes without a key press.
+- One PDDB key per saved message (`cipher.data` / `m.<16 hex>`, random names
+  from the TRNG, fail closed), so delete removes the key and each record
+  stays in its own basis. Reloaded on every basis change.
 
-## Key Patterns
-**Cipher module** — pure functions, no Xous dependencies
-**Key entry branching** — KeyEntry state handles numeric (Caesar/RailFence) vs text (Vigenere/Substitution) keys differently
-**Reverse operation** — output becomes input with mode flipped
-**Wrapped text display** — draw_wrapped helper splits long text across lines
-
-## Build
+## Test / gate
 ```bash
-cargo build -p cipher --target riscv32imac-unknown-xous-elf
+cd core && cargo test
+cd ../xous-dev-toolkit && bin/integrate --xous-root <xous-core> --grade -v ../precursor-cipher
 ```
