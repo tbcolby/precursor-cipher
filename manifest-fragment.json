@@ -1,0 +1,11 @@
+{
+    "cipher-workshop": {
+        "context_name": "Cipher Workshop",
+        "menu_name": {
+            "appmenu.cipher-workshop": {
+                "en": "Cipher Workshop",
+                "en-tts": "Cipher Workshop"
+            }
+        }
+    }
+}
